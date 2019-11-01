@@ -1,0 +1,12 @@
+{
+  "extends": "@whatasoda/tsconfig",
+  "compilerOptions": {
+    "rootDir": "./",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/types"
+    ]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

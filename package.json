@@ -1,0 +1,42 @@
+{
+  "name": "sf2-loader",
+  "version": "1.0.0",
+  "description": "sf2 soundfont file loader for webpack, based on https://github.com/colinbdclark/sf2-parser",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf lib && npm run build:ci",
+    "build:ci": "tsc -p tsconfig.lib.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/whatasoda/sf2-loader.git"
+  },
+  "keywords": [
+    "sf2",
+    "soundfont",
+    "webpack",
+    "loader"
+  ],
+  "author": "whatasoda <git@whatasoda.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/whatasoda/sf2-loader/issues"
+  },
+  "homepage": "https://github.com/whatasoda/sf2-loader#readme",
+  "dependencies": {
+    "sf2-parser": "github:colinbdclark/sf2-parser#0451014a6e64c0495e61d9d08f9c9dde0c371876"
+  },
+  "peerDependencies": {
+    "@types/webpack": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.3",
+    "@types/webpack": "^4.39.7",
+    "@whatasoda/eslint-config": "^1.2.4",
+    "@whatasoda/tsconfig": "^1.0.3",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "typescript": "^3.7.1-rc"
+  }
+}
