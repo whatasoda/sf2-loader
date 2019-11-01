@@ -1,6 +1,6 @@
 {
   "name": "sf2-loader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "sf2 soundfont file loader for webpack, based on https://github.com/colinbdclark/sf2-parser",
   "main": "lib/index.js",
   "scripts": {
