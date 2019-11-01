@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf lib && npm run build:ci",
-    "build:ci": "tsc -p tsconfig.lib.json"
+    "prepublishOnly": "npm run build",
+    "build": "rm -rf lib && tsc -p tsconfig.lib.json"
   },
   "repository": {
     "type": "git",
