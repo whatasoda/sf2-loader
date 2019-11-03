@@ -1,0 +1,3 @@
+[submodule "src/jsmidi"]
+	path = src/jsmidi
+	url = git@github.com:whatasoda/jsmidi.git
