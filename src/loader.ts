@@ -2,6 +2,8 @@ import webpack from 'webpack';
 import { Parser } from 'sf2-parser/src/sf2-parser';
 import { isBuffer } from 'util';
 import { sf2 } from './decls';
+import generateMIDI from './utils/generateMIDI';
+import applySoundFont from './utils/applySoundFont';
 
 const EXPECTED_DATA_KEY = [
   'samplingData',
@@ -22,13 +24,21 @@ const loader: webpack.loader.Loader = function(source) {
   const callback = this.async();
   if (!callback) return;
 
+  const soundfont = this.resourcePath;
+
   (async () => {
     const data = await extractSoundfontData(source);
-    if (!data) {
-      callback(new Error());
-    } else {
-      callback(null, generate(data));
-    }
+    if (!data) return callback(new Error());
+
+    const midiList = generateMIDI(data);
+    const promises = midiList.map(async ({ name, midi }) => {
+      const dataurl = await applySoundFont(midi, soundfont);
+      return [name, dataurl] as const;
+    });
+
+    const entries = Object.fromEntries(await Promise.all(promises));
+    const content = `module.exports=JSON.parse(${JSON.stringify(entries)})`;
+    callback(null, content);
   })();
 };
 loader.raw = true;
@@ -47,12 +57,6 @@ const extractSoundfontDataSync = (source: Uint8Array) => {
     acc[key] = parser[key];
     return acc;
   }, {}) as sf2.SoundFontData;
-};
-
-const generate = ({ sample, ...data }: sf2.SoundFontData) => {
-  const sampleBase64 = sample.map((item) => Buffer.from(item).toString('base64'));
-  const dataString = JSON.stringify({ sample: sampleBase64, ...data });
-  return `module.exports=${dataString}`;
 };
 
 export = loader;

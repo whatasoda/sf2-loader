@@ -16,13 +16,13 @@ export declare namespace sf2 {
     sample: Sample;
     sampleHeader: SampleHeader;
   }
-  
+
   export interface SamplingData {
     type: 'smpl';
     size: number;
     offset: number;
   }
-  
+
   export interface PresetHeader {
     presetName: string;
     preset: number;
@@ -32,35 +32,36 @@ export declare namespace sf2 {
     genre: number;
     morphology: number;
   }
-  
-  export interface PresetZone {
+
+  export interface PresetZone extends Array<PresetZoneItem> {}
+  export interface PresetZoneItem {
     presetGeneratorIndex: number;
     presetModulatorIndex: number;
   }
-  
-  export interface PresetZoneModulator extends Array<GeneratorTable> {}
-  
-  export interface PresetZoneGenerator extends Array<GeneratorTable> {}
-  
+
+  export interface PresetZoneModulator extends Array<OneOfEnumerator> {}
+
+  export interface PresetZoneGenerator extends Array<OneOfEnumerator> {}
+
   export interface Instrument extends Array<InstrumentItem> {}
   export interface InstrumentItem {
     instrumentName: string;
     instrumentBagIndex: number;
   }
-  
+
   export interface InstrumentZone extends Array<InstrumentZoneItem> {}
   export interface InstrumentZoneItem {
     instrumentGeneratorIndex: number;
     instrumentModulatorIndex: number;
   }
-  
-  export interface InstrumentZoneModulator extends Array<GeneratorTable> {}
-  
-  export interface InstrumentZoneGenerator extends Array<GeneratorTable> {}
-  
+
+  export interface InstrumentZoneModulator extends Array<OneOfEnumerator> {}
+
+  export interface InstrumentZoneGenerator extends Array<OneOfEnumerator> {}
+
   export interface Sample extends Array<SampleItem> {}
   export interface SampleItem extends ArrayBuffer {}
-  
+
   export interface SampleHeader extends Array<SampleHeaderItem> {}
   export interface SampleHeaderItem {
     sampleName: string;
@@ -72,22 +73,34 @@ export declare namespace sf2 {
     sampleLink: number;
     sampleType: number;
   }
-  
-  export interface GeneratorTable {
-    type: GeneratorTableType;
-    value: this['type'] extends GeneratorRangeTableType
-      ? {
+
+  interface EnumeratorBase<T extends EnumeratorType> {
+    type: T;
+    value: T extends EnumeratorRangeType
+      ? RangeValueObject
+      : T extends EnumeratorAmountType
+      ? AmountValueObject
+      : {
+          code: number;
+          amount: number;
           lo: number;
           hi: number;
-        }
-      : {
-          amount: number;
         };
   }
-  
-  type GeneratorTableType = GeneratorRangeTableType | GeneratorScalarTableType;
-  type GeneratorRangeTableType = 'keyRange' | 'velRange';
-  type GeneratorScalarTableType =
+  export type OneOfEnumerator = {
+    [T in EnumeratorType]: EnumeratorBase<T>;
+  }[EnumeratorType];
+
+  type RangeValueObject = Record<'lo' | 'hi', number>;
+  type AmountValueObject = Record<'amount', number>;
+
+  type ParsedZone = {
+    [T in EnumeratorType]?: RangeValueObject extends EnumeratorBase<T>['value'] ? [number, number] : number;
+  };
+
+  type EnumeratorType = EnumeratorRangeType | EnumeratorAmountType;
+  type EnumeratorRangeType = 'keyRange' | 'velRange' | 'keynum' | 'velocity';
+  type EnumeratorAmountType =
     | 'startAddrsOffset'
     | 'endAddrsOffset'
     | 'startloopAddrsOffset'
@@ -125,13 +138,13 @@ export declare namespace sf2 {
     | 'releaseVolEnv'
     | 'keynumToVolEnvHold'
     | 'keynumToVolEnvDecay'
+    | 'instrument'
     | 'startloopAddrsCoarseOffset'
-    | 'keynum'
-    | 'velocity'
     | 'initialAttenuation'
     | 'endloopAddrsCoarseOffset'
     | 'coarseTune'
     | 'fineTune'
+    | 'sampleID'
     | 'sampleModes'
     | 'scaleTuning'
     | 'exclusiveClass'
