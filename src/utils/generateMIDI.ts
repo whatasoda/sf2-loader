@@ -1,0 +1,46 @@
+import { sf2 } from '../decls';
+import jsmidi from '../jsmidi/midi';
+
+const SAMPLE_BIT_SIZE = 16;
+const DEFAULT_SAMPLE_RATE = 44100;
+
+const getNoteName = (() => {
+  const pitchList = Object.values(jsmidi.noteTable);
+  const table = Object.entries(jsmidi.noteTable).reduce<Record<number, jsmidi.MidiNoteName>>((acc, [name, pitch]) => {
+    acc[pitch] = name as jsmidi.MidiNoteName;
+    return acc;
+  }, {});
+
+  return (pitch: number) => {
+    const targetPitch = pitchList.find((v) => v <= pitch);
+    return targetPitch === undefined ? '' : table[targetPitch];
+  };
+})();
+
+const generateMIDI = ({ sample, sampleHeader }: sf2.SoundFontData) => {
+  return sampleHeader.map(({ originalPitch, sampleRate = DEFAULT_SAMPLE_RATE }, i) => {
+    const bitLength = sample[i].byteLength * 8;
+    const duration = bitLength / sampleRate / SAMPLE_BIT_SIZE;
+
+    const note = {
+      duration: 0,
+      channel: 0,
+      pitch: originalPitch,
+      volume: 85,
+    };
+    const events = [];
+
+    events.push(jsmidi.MidiEvent.noteOn(note));
+    note.duration = duration;
+    events.push(jsmidi.MidiEvent.noteOff(note));
+
+    const tracks = [new jsmidi.MidiTrack({ events })];
+    const song = jsmidi.MidiWriter({ tracks });
+    const midi = Buffer.from(song.b64, 'base64');
+
+    const name = getNoteName(originalPitch);
+    return { name, midi };
+  });
+};
+
+export default generateMIDI;
