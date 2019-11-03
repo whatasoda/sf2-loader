@@ -25,13 +25,16 @@
   },
   "homepage": "https://github.com/whatasoda/sf2-loader#readme",
   "dependencies": {
-    "sf2-parser": "github:colinbdclark/sf2-parser#0451014a6e64c0495e61d9d08f9c9dde0c371876"
+    "node-lame": "^1.2.0",
+    "sf2-parser": "github:colinbdclark/sf2-parser#0451014a6e64c0495e61d9d08f9c9dde0c371876",
+    "temp": "^0.9.1"
   },
   "peerDependencies": {
     "@types/webpack": "*"
   },
   "devDependencies": {
     "@types/node": "^12.12.3",
+    "@types/temp": "^0.8.34",
     "@types/webpack": "^4.39.7",
     "@whatasoda/eslint-config": "^1.2.4",
     "@whatasoda/tsconfig": "^1.0.3",

@@ -5,6 +5,8 @@
     "outDir": "lib",
     "target": "es2018",
     "module": "commonjs",
+    "allowJs": true,
+    "checkJs": false,
     "declaration": true
   },
   "include": ["src"]
