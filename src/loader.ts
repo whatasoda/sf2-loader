@@ -42,7 +42,7 @@ const loader: webpack.loader.Loader = function(source, sourceMap) {
       acc[key] = value;
       return acc;
     }, {});
-    const content = `module.exports=JSON.parse(${JSON.stringify(contentJson)})`;
+    const content = `module.exports=JSON.parse('${JSON.stringify(contentJson)}')`;
     callback(null, content, sourceMap);
   })();
 };
