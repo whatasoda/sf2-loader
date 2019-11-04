@@ -1,12 +1,12 @@
 # sf2-loader
-**`sf2-loader`** is a webpack loader to parse sf2 soundfont file. It is based on https://github.com/colinbdclark/sf2-parser. The output file is formatted for use with https://github.com/danigb/soundfont-player.
+**`sf2-loader`** is a webpack loader to parse sf2 soundfont file. It is based on https://github.com/colinbdclark/sf2-parser. The output file is formatted for use with https://github.com/danigb/sample-player.
 
 ## Installation
 ### Requirement
 `sf2-loader` uses [LAME](http://lame.sourceforge.net/) and [FluidSynth](http://www.fluidsynth.org/).
 
-To install LAME, see [here](https://github.com/jankarres/node-lame#installation)
-To install FluidSynth, see [here](https://github.com/FluidSynth/fluidsynth/wiki/Download)
+- To install LAME, see [here](https://github.com/jankarres/node-lame#installation)
+- To install FluidSynth, see [here](https://github.com/FluidSynth/fluidsynth/wiki/Download)
 
 ### install from npm
 ```sh
