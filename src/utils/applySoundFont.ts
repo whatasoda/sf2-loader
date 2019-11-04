@@ -19,7 +19,7 @@ const midiToWav = async (midi: Buffer, soundfontPath: string): Promise<Buffer> =
   const wavPath = temp.path({ suffix: '.wav' });
   const midiPath = temp.path({ suffix: '.midi' });
 
-  await writeFile(midiPath, midi);
+  await writeFile(midiPath, midi, { encoding: 'ascii' });
   await exec(`fluidsynth -C 1 -R 1 -g 0.5 -F ${wavPath} ${soundfontPath} ${midiPath}`);
   const wav = await readFile(wavPath);
   await unlink(midiPath);

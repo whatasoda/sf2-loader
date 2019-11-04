@@ -3,6 +3,7 @@ import jsmidi from '../jsmidi/midi';
 
 const SAMPLE_BIT_SIZE = 16;
 const DEFAULT_SAMPLE_RATE = 44100;
+const TICKS_PER_SECOND = 1000;
 
 const getNoteName = (() => {
   const pitchList = Object.values(jsmidi.noteTable);
@@ -20,7 +21,7 @@ const getNoteName = (() => {
 const generateMIDI = ({ sample, sampleHeader }: sf2.SoundFontData) => {
   return sampleHeader.map(({ originalPitch, sampleRate = DEFAULT_SAMPLE_RATE }, i) => {
     const bitLength = sample[i].byteLength * 8;
-    const duration = bitLength / sampleRate / SAMPLE_BIT_SIZE;
+    const duration = Math.round((bitLength / sampleRate / SAMPLE_BIT_SIZE) * TICKS_PER_SECOND);
 
     const note = {
       duration: 0,
@@ -35,8 +36,7 @@ const generateMIDI = ({ sample, sampleHeader }: sf2.SoundFontData) => {
     events.push(jsmidi.MidiEvent.noteOff(note));
 
     const tracks = [new jsmidi.MidiTrack({ events })];
-    const song = jsmidi.MidiWriter({ tracks });
-    const midi = Buffer.from(song.b64, 'base64');
+    const midi = jsmidi.MidiWriter({ tracks }).buffer;
 
     const name = getNoteName(originalPitch);
     return { name, midi };
