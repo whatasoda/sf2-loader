@@ -36,8 +36,12 @@ const loader: webpack.loader.Loader = function(source) {
       return [name, dataurl] as const;
     });
 
-    const entries = Object.fromEntries(await Promise.all(promises));
-    const content = `module.exports=JSON.parse(${JSON.stringify(entries)})`;
+    const entries = await Promise.all(promises);
+    const contentJson = entries.reduce<Record<string, string>>((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
+    const content = `module.exports=JSON.parse(${JSON.stringify(contentJson)})`;
     callback(null, content);
   })();
 };
