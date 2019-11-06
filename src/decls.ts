@@ -1,6 +1,6 @@
 type LameOptions = ConstructorParameters<typeof import('node-lame').Lame>[0];
 
-export interface LoaderOptions extends Pick<LameOptions, 'bitrate' | 'resample'> {}
+export interface ConverterOptions extends Pick<LameOptions, 'bitrate' | 'resample'> {}
 
 export interface SoundFontJSONData extends Omit<sf2.SoundFontData, 'sample'> {
   sample: string[];

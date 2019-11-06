@@ -3,14 +3,14 @@ import fs from 'fs';
 import temp from 'temp';
 import { promisify } from 'util';
 import { Lame } from 'node-lame';
-import { LoaderOptions } from '../decls';
+import { ConverterOptions } from '../decls';
 
 const writeFile = promisify(fs.writeFile);
 const readFile = promisify(fs.readFile);
 const unlink = promisify(fs.unlink);
 const exec = promisify(cp.exec);
 
-const applySoundFont = async (midi: Buffer, soundfontPath: string, options: LoaderOptions) => {
+const applySoundFont = async (midi: Buffer, soundfontPath: string, options: ConverterOptions) => {
   const wav = await midiToWav(midi, soundfontPath);
   const mp3 = await encodeToMp3(wav, options);
   return toDataUrl(mp3);
@@ -28,7 +28,7 @@ const midiToWav = async (midi: Buffer, soundfontPath: string): Promise<Buffer> =
   return wav;
 };
 
-const encodeToMp3 = async (wav: Buffer, options: LoaderOptions): Promise<Buffer> => {
+const encodeToMp3 = async (wav: Buffer, options: ConverterOptions): Promise<Buffer> => {
   const decoder = new Lame({ output: 'buffer', ...options }).setBuffer(wav);
   await decoder.encode();
   return decoder.getBuffer();
