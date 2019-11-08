@@ -1,6 +1,6 @@
 {
   "name": "sf2-loader",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "**`sf2-loader`** is a webpack loader to parse sf2 soundfont file. It is based on https://github.com/colinbdclark/sf2-parser. The output file is formatted for use with https://github.com/danigb/sample-player.",
   "main": "lib/index.js",
   "scripts": {
