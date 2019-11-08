@@ -2,7 +2,8 @@ import loader = require('./loader');
 import convert from './convert';
 import parse from './parse';
 
-module.exports = loader;
-export default loader;
+const main = Object.assign(loader, { convert, parse });
+module.exports = main;
+export default loader as typeof main;
 export * from './decls';
 export { convert, parse };
