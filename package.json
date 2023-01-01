@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/whatasoda/sf2-loader#readme",
   "dependencies": {
-    "loader-utils": "^1.2.3",
+    "loader-utils": "^3.2.1",
     "node-lame": "^1.2.0",
     "schema-utils": "^2.5.0",
     "sf2-parser": "github:colinbdclark/sf2-parser#0451014a6e64c0495e61d9d08f9c9dde0c371876",
